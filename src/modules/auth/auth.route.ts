@@ -7,7 +7,8 @@ const router = Router();
 
 router.post("/register", AuthController.register);
 router.post("/login", AuthController.login);
+router.post("/refresh-token", AuthController.refreshToken);
 router.get("/me", checkAuth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN), AuthController.getMe);
 router.post("/logout", AuthController.logout);
 
-export const AuthRoute = router;
+export const AuthRoute = router;

@@ -117,6 +117,22 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
   }
   ```
 
+#### Refresh Access Token
+* **Endpoint:** `POST /api/auth/refresh-token`
+* **Access:** Public
+* **Request:** Uses the `refreshToken` HttpOnly cookie set at login.
+* **Success Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "statusCode": 200,
+    "message": "Access token refreshed successfully",
+    "data": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+  }
+  ```
+
 #### Get Authenticated Profile
 * **Endpoint:** `GET /api/auth/me`
 * **Access:** Authenticated (requires cookie `accessToken`)
@@ -143,7 +159,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
 
 #### Logout User
 * **Endpoint:** `POST /api/auth/logout`
-* **Access:** Public (Clears cookie `accessToken`)
+* **Access:** Public (Clears cookies `accessToken` and `refreshToken`)
 * **Success Response (200 OK):**
   ```json
   {

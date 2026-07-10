@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { AuthRoute } from "../modules/auth/auth.route";
 import { UserRoute } from "../modules/user/user.route";
-
-import { GearRoute, ProviderGearRoute } from "../modules/gear/gear.route";
+import { GearRoute } from "../modules/gear/gear.route";
 import { CategoryRoute } from "../modules/category/category.route";
+
+
 import { OrderRoute } from "../modules/order/order.route";
 import { OrderItemRoute } from "../modules/orderItem/orderItem.route";
 import { PaymentRoute } from "../modules/payment/payment.route";
@@ -24,10 +25,6 @@ const allRoute = [
     {
         path: "/gear",
         route: GearRoute,
-    },
-    {
-        path: "/provider/gear",
-        route: ProviderGearRoute,
     },
 
     {

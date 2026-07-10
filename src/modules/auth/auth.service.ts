@@ -102,6 +102,8 @@ const loginUser = async (payload: ILoginUser) => {
         throw new Error("Invalid email or password");
     }
 
+    const { password, ...safeUser } = user;
+
     // Generate token
     const jwtPayload = {
         id: user.id,
@@ -116,7 +118,8 @@ const loginUser = async (payload: ILoginUser) => {
 
     return {
         accessToken,
-        refreshToken
+        refreshToken,
+        user: safeUser,
     };
 };
 const refreshTokenService = async (refreshToken: string) => {

@@ -1,5 +1,15 @@
 import { Router } from "express";
+import CategoryController from "./category.controller";
+import { checkAuth } from "../../utils/checkAuth";
+import { Role } from "../../../prisma/generated/prisma/enums";
 
 const router = Router();
+router.get("/", CategoryController.getAll);
+router.get("/:id", CategoryController.getById);
 
-export const CategoryRoute= router;
+
+router.post("/", checkAuth(Role.ADMIN), CategoryController.add);
+router.put("/:id", checkAuth(Role.ADMIN), CategoryController.update);
+router.delete("/:id", checkAuth(Role.ADMIN), CategoryController.remove);
+
+export const CategoryRoute = router;
