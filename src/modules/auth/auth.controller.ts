@@ -1,3 +1,78 @@
-const AuthController = {};
+import { Request, Response } from "express";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
+import AuthService from "./auth.service";
+import httpStatus from "http-status";
+import { prisma } from "../../lib/prisma";
+
+const register = catchAsync(async (req: Request, res: Response) => {
+    const result = await AuthService.registerUser(req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.CREATED,
+        success: true,
+        message: "User registered successfully",
+        data: result,
+    });
+});
+
+const login = catchAsync(async (req: Request, res: Response) => {
+    const result = await AuthService.loginUser(req.body);
+    const { accessToken, user } = result;
+
+    // Set cookie
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (or match token duration)
+    });
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User logged in successfully",
+        data: {
+            user,
+            accessToken,
+        },
+    });
+});
+
+const getMe = catchAsync(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user) {
+        throw new Error("You are not authenticated");
+    }
+    
+    const fullUser = await AuthService.getMe(user.id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User profile fetched successfully",
+        data: fullUser,
+    });
+});
+
+
+const logout = catchAsync(async (req: Request, res: Response) => {
+    res.clearCookie("accessToken");
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User logged out successfully",
+        data: null,
+    });
+});
+
+const AuthController = {
+    register,
+    login,
+    getMe,
+    logout,
+};
 
 export default AuthController;
+

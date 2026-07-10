@@ -33,8 +33,6 @@ export const checkAuth=(...authRoles:Role[])=>async(req:Request,res:Response,nex
         const user = await prisma.user.findUnique({
             where: {
                 id: verifiedToken.id,
-                name: verifiedToken.name,
-                email: verifiedToken.email,
             },omit: {
                 password: true
             }

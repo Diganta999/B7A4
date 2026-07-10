@@ -1,0 +1,238 @@
+================================================================================
+GEARUP API ENDPOINTS & POSTMAN RAW JSON PAYLOADS
+================================================================================
+
+Base URL: http://localhost:5000/api
+
+--------------------------------------------------------------------------------
+1. AUTHENTICATION & PROFILE
+--------------------------------------------------------------------------------
+
+### [POST] Register User
+* **URL:** http://localhost:5000/api/auth/register
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "password": "securepassword123",
+  "role": "CUSTOMER", 
+  "phone": "+1234567890",
+  "address": "123 Main St, Springfield",
+  "profileImage": "https://example.com/profiles/jane.png"
+}
+
+
+### [POST] Register Provider (Alternative Role)
+* **URL:** http://localhost:5000/api/auth/register
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "name": "Adventure Equipment Shop",
+  "email": "vendor@example.com",
+  "password": "securepassword123",
+  "role": "PROVIDER",
+  "phone": "+1987654321",
+  "address": "456 Outdoor Rd, Mountain View",
+  "profileImage": "https://example.com/profiles/vendor.png"
+}
+
+
+### [POST] Login User
+* **URL:** http://localhost:5000/api/auth/login
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "email": "jane.doe@example.com",
+  "password": "securepassword123"
+}
+
+
+### [GET] Get Current Authenticated Profile
+* **URL:** http://localhost:5000/api/auth/me
+* **Headers:** (Note: Requires the 'accessToken' Cookie from Login)
+
+
+### [POST] Logout User
+* **URL:** http://localhost:5000/api/auth/logout
+
+
+--------------------------------------------------------------------------------
+2. GEAR & CATEGORIES (PUBLIC)
+--------------------------------------------------------------------------------
+
+### [GET] Browse Gear (No Filters)
+* **URL:** http://localhost:5000/api/gear
+
+
+### [GET] Browse Gear (With Filters)
+* **URL:** http://localhost:5000/api/gear?category=Cycling&brand=Trek&priceMin=10&priceMax=50&searchTerm=Bike
+
+
+### [GET] Get Gear Details By ID
+* **URL:** http://localhost:5000/api/gear/111e8400-e29b-41d4-a716-446655440111
+
+
+### [GET] Get All Categories
+* **URL:** http://localhost:5000/api/categories
+
+
+--------------------------------------------------------------------------------
+3. RENTAL ORDERS (CUSTOMER)
+--------------------------------------------------------------------------------
+
+### [POST] Create Rental Order (Requires CUSTOMER auth cookie)
+* **URL:** http://localhost:5000/api/rentals
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "startDate": "2026-07-15T10:00:00.000Z",
+  "endDate": "2026-07-20T10:00:00.000Z",
+  "items": [
+    {
+      "gearItemId": "111e8400-e29b-41d4-a716-446655440111",
+      "quantity": 1
+    }
+  ]
+}
+
+
+### [GET] Get User's Rental Orders (Requires CUSTOMER auth cookie)
+* **URL:** http://localhost:5000/api/rentals
+
+
+### [GET] Get Rental Order Details (Requires CUSTOMER/PROVIDER/ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/rentals/444e8400-e29b-41d4-a716-446655440444
+
+
+--------------------------------------------------------------------------------
+4. PAYMENTS (CUSTOMER)
+--------------------------------------------------------------------------------
+
+### [POST] Create Payment Session (Requires CUSTOMER auth cookie)
+* **URL:** http://localhost:5000/api/payments/create
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "rentalOrderId": "444e8400-e29b-41d4-a716-446655440444",
+  "method": "STRIPE"
+}
+
+
+### [POST] Confirm Payment Webhook
+* **URL:** http://localhost:5000/api/payments/confirm
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "transactionId": "txn_stripe_example_12345",
+  "status": "COMPLETED",
+  "rentalOrderId": "444e8400-e29b-41d4-a716-446655440444"
+}
+
+
+### [GET] Get Payment History (Requires CUSTOMER auth cookie)
+* **URL:** http://localhost:5000/api/payments
+
+
+### [GET] Get Payment Details (Requires CUSTOMER/ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/payments/888e8400-e29b-41d4-a716-446655440888
+
+
+--------------------------------------------------------------------------------
+5. PROVIDER MANAGEMENT (PROVIDER)
+--------------------------------------------------------------------------------
+
+### [POST] Add Gear to Inventory (Requires PROVIDER auth cookie)
+* **URL:** http://localhost:5000/api/provider/gear
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "name": "Camping Dome Tent 4-Person",
+  "brand": "Coleman",
+  "description": "Spacious water-resistant dome tent for outdoor camping activities.",
+  "dailyRentalPrice": 15.00,
+  "stock": 4,
+  "categoryId": "220e8400-e29b-41d4-a716-446655440222",
+  "specifications": {
+    "capacity": "4 persons",
+    "weight": "4.5kg",
+    "waterproofRating": "3000mm"
+  },
+  "images": [
+    "https://example.com/images/tent1.jpg",
+    "https://example.com/images/tent2.jpg"
+  ]
+}
+
+
+### [PUT] Update Gear Listing (Requires Owner PROVIDER auth cookie)
+* **URL:** http://localhost:5000/api/provider/gear/abcde400-e29b-41d4-a716-446655440abc
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "dailyRentalPrice": 18.00,
+  "stock": 6,
+  "availability": "AVAILABLE",
+  "specifications": {
+    "capacity": "4 persons",
+    "weight": "4.2kg"
+  }
+}
+
+
+### [DELETE] Remove Gear from Inventory (Requires Owner PROVIDER auth cookie)
+* **URL:** http://localhost:5000/api/provider/gear/abcde400-e29b-41d4-a716-446655440abc
+
+
+### [GET] Get Provider's Incoming Orders (Requires PROVIDER auth cookie)
+* **URL:** http://localhost:5000/api/provider/orders
+
+
+### [PATCH] Update Rental Order Status (Requires PROVIDER auth cookie)
+* **URL:** http://localhost:5000/api/provider/orders/444e8400-e29b-41d4-a716-446655440444
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "status": "CONFIRMED"
+}
+
+
+--------------------------------------------------------------------------------
+6. REVIEWS (CUSTOMER)
+--------------------------------------------------------------------------------
+
+### [POST] Create Review (Requires CUSTOMER auth cookie, post-return)
+* **URL:** http://localhost:5000/api/reviews
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "gearItemId": "111e8400-e29b-41d4-a716-446655440111",
+  "rating": 5,
+  "comment": "Super clean mountain bike. Shifts incredibly smoothly!"
+}
+
+
+--------------------------------------------------------------------------------
+7. ADMIN OPERATIONS (ADMIN)
+--------------------------------------------------------------------------------
+
+### [GET] Get All Users (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/admin/users
+
+
+### [PATCH] Update User Status (Suspend/Activate) (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/admin/users/550e8400-e29b-41d4-a716-446655440000
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "status": "SUSPENDED"
+}
+
+
+### [GET] Get All Gear Listings (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/admin/gear
+
+
+### [GET] Get All Rental Orders (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/admin/rentals
+================================================================================
