@@ -37,6 +37,11 @@ const paymentInclude = {
     },
 };
 
+import config from "../../config";
+import Stripe from "stripe";
+
+const stripe = new Stripe(config.stripe_secret_key as string);
+
 const validateProvider = (provider: PaymentProvider) => {
     if (!Object.values(PaymentProvider).includes(provider)) {
         throw new Error("Invalid payment provider");
@@ -50,14 +55,10 @@ const validatePaymentStatus = (status: PaymentStatus) => {
 };
 
 const createPayment = async (customerId: string, payload: ICreatePaymentPayload) => {
-    const provider = payload.provider ?? payload.method;
+    const provider = payload.provider ?? payload.method ?? PaymentProvider.STRIPE;
 
     if (!payload.rentalOrderId) {
         throw new Error("rentalOrderId is required");
-    }
-
-    if (!provider) {
-        throw new Error("Payment provider is required");
     }
 
     validateProvider(provider);
@@ -89,8 +90,10 @@ const createPayment = async (customerId: string, payload: ICreatePaymentPayload)
         return order.payment;
     }
 
+    let paymentRecord;
+
     if (order.payment) {
-        return prisma.payment.update({
+        paymentRecord = await prisma.payment.update({
             where: {
                 id: order.payment.id,
             },
@@ -100,17 +103,46 @@ const createPayment = async (customerId: string, payload: ICreatePaymentPayload)
             },
             include: paymentInclude,
         });
+    } else {
+        paymentRecord = await prisma.payment.create({
+            data: {
+                rentalOrderId: order.id,
+                provider,
+                amount: order.totalAmount,
+                status: PaymentStatus.PENDING,
+            },
+            include: paymentInclude,
+        });
     }
 
-    return prisma.payment.create({
-        data: {
-            rentalOrderId: order.id,
-            provider,
-            amount: order.totalAmount,
-            status: PaymentStatus.PENDING,
-        },
-        include: paymentInclude,
-    });
+    if (provider === PaymentProvider.STRIPE) {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment",
+            success_url: `${config.app_url}/payment/success?transactionId=${paymentRecord.id}`,
+            cancel_url: `${config.app_url}/payment/cancel`,
+            line_items: [
+                {
+                    price_data: {
+                        currency: "usd",
+                        product_data: {
+                            name: `Rental Order #${order.id}`,
+                        },
+                        unit_amount: Math.round(order.totalAmount * 100),
+                    },
+                    quantity: 1,
+                },
+            ],
+            client_reference_id: paymentRecord.id,
+        });
+
+        return {
+            ...paymentRecord,
+            paymentUrl: session.url,
+        };
+    }
+
+    return paymentRecord;
 };
 
 const confirmPayment = async (payload: IConfirmPaymentPayload) => {

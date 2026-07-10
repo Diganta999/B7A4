@@ -172,6 +172,18 @@ Base URL: http://localhost:5000/api
 
 
 --------------------------------------------------------------------------------
+3.5 ORDER ITEMS (ADMIN/CUSTOMER/PROVIDER)
+--------------------------------------------------------------------------------
+
+### [GET] Get All Order Items (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/order-items
+
+
+### [GET] Get Order Item Details (Requires ADMIN/CUSTOMER/PROVIDER auth cookie)
+* **URL:** http://localhost:5000/api/order-items/111e8400-e29b-41d4-a716-446655440111
+
+
+--------------------------------------------------------------------------------
 4. PAYMENTS (CUSTOMER)
 --------------------------------------------------------------------------------
 
@@ -180,8 +192,7 @@ Base URL: http://localhost:5000/api
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
-  "rentalOrderId": "444e8400-e29b-41d4-a716-446655440444",
-  "method": "STRIPE"
+  "rentalOrderId": "444e8400-e29b-41d4-a716-446655440444"
 }
 
 
