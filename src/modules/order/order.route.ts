@@ -1,5 +1,17 @@
 import { Router } from "express";
+import OrderController from "./order.controller";
+import { checkAuth } from "../../utils/checkAuth";
+import { Role } from "../../../prisma/generated/prisma/enums";
 
 const router = Router();
 
-export const OrderRoute= router;
+router.post("/", checkAuth(Role.CUSTOMER), OrderController.create);
+router.get("/", checkAuth(Role.CUSTOMER), OrderController.getMine);
+router.get("/:id", checkAuth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN), OrderController.getById);
+
+const adminRouter = Router();
+adminRouter.get("/", checkAuth(Role.ADMIN), OrderController.getAll);
+
+export const OrderRoute = router;
+export const OrderAdminRoute = adminRouter;
+

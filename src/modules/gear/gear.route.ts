@@ -10,6 +10,11 @@ router.get("/:id", GearController.getById);
 
 router.post("/", checkAuth(Role.PROVIDER, Role.ADMIN), GearController.add);
 router.put("/:id", checkAuth(Role.PROVIDER, Role.ADMIN), GearController.update);
+router.patch("/:id", checkAuth(Role.PROVIDER, Role.ADMIN), GearController.update);
 router.delete("/:id", checkAuth(Role.PROVIDER, Role.ADMIN), GearController.remove);
 
+const adminRouter = Router();
+adminRouter.get("/", checkAuth(Role.ADMIN), GearController.getAll);
+
 export const GearRoute = router;
+export const GearAdminRoute = adminRouter;

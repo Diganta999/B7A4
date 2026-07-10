@@ -65,6 +65,48 @@ Base URL: http://localhost:5000/api
 * **URL:** http://localhost:5000/api/gear
 
 
+### [POST] Add Gear to Inventory (Requires PROVIDER/ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/gear
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "name": "Camping Dome Tent 4-Person",
+  "brand": "Coleman",
+  "description": "Spacious water-resistant dome tent for outdoor camping activities.",
+  "dailyRentalPrice": 15.00,
+  "stock": 4,
+  "categoryId": "220e8400-e29b-41d4-a716-446655440222",
+  "specifications": {
+    "capacity": "4 persons",
+    "weight": "4.5kg",
+    "waterproofRating": "3000mm"
+  },
+  "images": [
+    "https://example.com/images/tent1.jpg",
+    "https://example.com/images/tent2.jpg"
+  ]
+}
+
+
+### [PUT] Update Gear Listing (Requires PROVIDER/ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/gear/abcde400-e29b-41d4-a716-446655440abc
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "dailyRentalPrice": 18.00,
+  "stock": 6,
+  "availability": "AVAILABLE",
+  "specifications": {
+    "capacity": "4 persons",
+    "weight": "4.2kg"
+  }
+}
+
+
+### [DELETE] Remove Gear from Inventory (Requires PROVIDER/ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/gear/abcde400-e29b-41d4-a716-446655440abc
+
+
 ### [GET] Browse Gear (With Filters)
 * **URL:** http://localhost:5000/api/gear?category=Cycling&brand=Trek&priceMin=10&priceMax=50&searchTerm=Bike
 
@@ -75,6 +117,30 @@ Base URL: http://localhost:5000/api
 
 ### [GET] Get All Categories
 * **URL:** http://localhost:5000/api/categories
+
+
+### [POST] Create Category (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/categories
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "name": "Camping",
+  "description": "Equipment used for camping and outdoor stays"
+}
+
+
+### [PUT] Update Category (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/categories/220e8400-e29b-41d4-a716-446655440222
+* **Headers:** Content-Type: application/json
+* **Raw Body (JSON):**
+{
+  "name": "Camping & Hiking",
+  "description": "Updated category description"
+}
+
+
+### [DELETE] Remove Category (Requires ADMIN auth cookie)
+* **URL:** http://localhost:5000/api/categories/220e8400-e29b-41d4-a716-446655440222
 
 
 --------------------------------------------------------------------------------

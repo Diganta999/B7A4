@@ -9,6 +9,8 @@ import { OrderRoute } from "../modules/order/order.route";
 import { OrderItemRoute } from "../modules/orderItem/orderItem.route";
 import { PaymentRoute } from "../modules/payment/payment.route";
 import { ReviewRoute } from "../modules/review/review.route";
+import { ProviderRoute } from "../modules/provider/provider.route";
+import { AdminRoute } from "../modules/admin/admin.route";
 
 const routes = Router();
 
@@ -36,6 +38,10 @@ const allRoute = [
         route: OrderRoute,
     },
     {
+        path: "/rentals",
+        route: OrderRoute,
+    },
+    {
         path: "/order-items",
         route: OrderItemRoute,
     },
@@ -46,6 +52,14 @@ const allRoute = [
     {
         path: "/reviews",
         route: ReviewRoute,
+    },
+    {
+        path: "/provider",
+        route: ProviderRoute,
+    },
+    {
+        path: "/admin",
+        route: AdminRoute,
     },
 ];
 
