@@ -211,7 +211,7 @@ const getPayments = async (authUser: IAuthUser) => {
         authUser.role === Role.ADMIN
             ? {}
             : authUser.role === Role.PROVIDER
-              ? {
+                ? {
                     rentalOrder: {
                         items: {
                             some: {
@@ -222,7 +222,7 @@ const getPayments = async (authUser: IAuthUser) => {
                         },
                     },
                 }
-              : {
+                : {
                     rentalOrder: {
                         customerId: authUser.id,
                     },

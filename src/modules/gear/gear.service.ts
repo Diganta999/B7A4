@@ -204,7 +204,7 @@ const updateGearItem = async (
         const newStock = Number(payload.stock);
         const stockDiff = newStock - gear.stock;
         updateData.stock = newStock;
-        
+
         // Adjust availableStock accordingly
         const newAvailableStock = Math.max(0, gear.availableStock + stockDiff);
         updateData.availableStock = newAvailableStock;

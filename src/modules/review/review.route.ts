@@ -7,4 +7,4 @@ const router = Router();
 
 router.post("/", checkAuth(Role.CUSTOMER), ReviewController.create);
 
-export const ReviewRoute= router;
+export const ReviewRoute = router;

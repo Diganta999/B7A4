@@ -15,4 +15,3 @@ router.get("/orders", checkAuth(Role.PROVIDER), OrderController.getAll);
 router.patch("/orders/:id", checkAuth(Role.PROVIDER), OrderController.updateProviderStatus);
 
 export const ProviderRoute = router;
- 

@@ -10,4 +10,4 @@ router.post("/confirm", PaymentController.confirm);
 router.get("/", checkAuth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN), PaymentController.getAll);
 router.get("/:id", checkAuth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN), PaymentController.getById);
 
-export const PaymentRoute= router;
+export const PaymentRoute = router;
