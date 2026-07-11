@@ -9,9 +9,5 @@ router.post("/", checkAuth(Role.CUSTOMER), OrderController.create);
 router.get("/", checkAuth(Role.CUSTOMER), OrderController.getMine);
 router.get("/:id", checkAuth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN), OrderController.getById);
 
-const adminRouter = Router();
-adminRouter.get("/", checkAuth(Role.ADMIN), OrderController.getAll);
-
 export const OrderRoute = router;
-export const OrderAdminRoute = adminRouter;
 
