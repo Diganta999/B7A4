@@ -90,59 +90,70 @@ const createPayment = async (customerId: string, payload: ICreatePaymentPayload)
         return order.payment;
     }
 
-    let paymentRecord;
+    return prisma.$transaction(async (tx) => {
+        let paymentRecord;
 
-    if (order.payment) {
-        paymentRecord = await prisma.payment.update({
-            where: {
-                id: order.payment.id,
-            },
-            data: {
-                provider,
-                amount: order.totalAmount,
-            },
-            include: paymentInclude,
-        });
-    } else {
-        paymentRecord = await prisma.payment.create({
-            data: {
-                rentalOrderId: order.id,
-                provider,
-                amount: order.totalAmount,
-                status: PaymentStatus.PENDING,
-            },
-            include: paymentInclude,
-        });
-    }
-
-    if (provider === PaymentProvider.STRIPE) {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "payment",
-            success_url: `${config.app_url}/payment/success?transactionId=${paymentRecord.id}`,
-            cancel_url: `${config.app_url}/payment/cancel`,
-            line_items: [
-                {
-                    price_data: {
-                        currency: "usd",
-                        product_data: {
-                            name: `Rental Order #${order.id}`,
-                        },
-                        unit_amount: Math.round(order.totalAmount * 100),
-                    },
-                    quantity: 1,
+        if (order.payment) {
+            paymentRecord = await tx.payment.update({
+                where: {
+                    id: order.payment.id,
                 },
-            ],
-            client_reference_id: paymentRecord.id,
-        });
+                data: {
+                    provider,
+                    amount: order.totalAmount,
+                },
+                include: paymentInclude,
+            });
+        } else {
+            paymentRecord = await tx.payment.create({
+                data: {
+                    rentalOrderId: order.id,
+                    provider,
+                    amount: order.totalAmount,
+                    status: PaymentStatus.PENDING,
+                },
+                include: paymentInclude,
+            });
+        }
 
-        return {
-            ...paymentRecord,
-            paymentUrl: session.url,
-        };
-    }
+        if (provider === PaymentProvider.STRIPE) {
+            let session;
 
-    return paymentRecord;
+            try {
+                session = await stripe.checkout.sessions.create({
+                    payment_method_types: ["card"],
+                    mode: "payment",
+                    success_url: `${config.app_url}/payment/success?transactionId=${paymentRecord.id}`,
+                    cancel_url: `${config.app_url}/payment/cancel`,
+                    line_items: [
+                        {
+                            price_data: {
+                                currency: "usd",
+                                product_data: {
+                                    name: `Rental Order #${order.id}`,
+                                },
+                                unit_amount: Math.round(order.totalAmount * 100),
+                            },
+                            quantity: 1,
+                        },
+                    ],
+                    client_reference_id: paymentRecord.id,
+                });
+            } catch (stripeError) {
+                // Stripe session creation failed — throw to rollback the transaction
+                throw new Error(
+                    `Payment gateway error: ${stripeError instanceof Error ? stripeError.message : "Unknown error"}`
+                );
+            }
+
+            return {
+                ...paymentRecord,
+                paymentUrl: session.url,
+            };
+        }
+
+        return paymentRecord;
+    });
 };
 
 const confirmPayment = async (payload: IConfirmPaymentPayload) => {
@@ -158,6 +169,7 @@ const confirmPayment = async (payload: IConfirmPaymentPayload) => {
                 payload.paymentId ? { id: payload.paymentId } : undefined,
                 payload.rentalOrderId ? { rentalOrderId: payload.rentalOrderId } : undefined,
                 payload.transactionId ? { transactionId: payload.transactionId } : undefined,
+                payload.transactionId ? { id: payload.transactionId } : undefined,
             ].filter((condition): condition is NonNullable<typeof condition> => Boolean(condition)),
         },
     });
