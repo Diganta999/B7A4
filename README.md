@@ -1,6 +1,16 @@
 # GearUp - Sports & Outdoor Equipment Rental API
 
+**Live URL:** [Insert Live URL Here]
+**GitHub Repository:** [https://github.com/Diganta999/B7A4](https://github.com/Diganta999/B7A4)
+
 GearUp is a backend API for a sports and outdoor equipment rental service. Customers can browse available gear, place rental orders, make payments (via Stripe or SSLCommerz), and leave reviews. Providers can manage their gear inventory, track stock availability, and manage incoming rental orders. Admins oversee the platform, manage users, and moderate listings.
+
+## Key Features
+- **Role-Based Access Control (RBAC):** Distinct roles for Customer, Provider, and Admin.
+- **Gear Management:** Providers can add, update, and manage their gear inventory.
+- **Rental Orders:** Customers can place orders and providers can update order statuses.
+- **Secure Authentication:** JWT-based secure authentication.
+- **Payment Ready:** Support for processing payments via Stripe.
 
 ---
 
@@ -194,7 +204,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
         "id": "111e8400-e29b-41d4-a716-446655440111",
         "name": "Mountain Bike Pro",
         "description": "High-performance full suspension mountain bike.",
-        "price": 25.00,
+        "dailyRentalPrice": 25.00,
         "brand": "Trek",
         "availability": "AVAILABLE",
         "stock": 5,
@@ -223,7 +233,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
       "id": "111e8400-e29b-41d4-a716-446655440111",
       "name": "Mountain Bike Pro",
       "description": "High-performance full suspension mountain bike.",
-      "price": 25.00,
+      "dailyRentalPrice": 25.00,
       "brand": "Trek",
       "availability": "AVAILABLE",
       "stock": 5,
@@ -347,7 +357,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
           "gearItem": {
             "id": "111e8400-e29b-41d4-a716-446655440111",
             "name": "Mountain Bike Pro",
-            "price": 25.00
+            "dailyRentalPrice": 25.00
           }
         }
       ]
@@ -458,7 +468,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
   {
     "name": "Camping Tent 4-Person",
     "description": "Spacious water-resistant dome tent for outdoor camping.",
-    "price": 15.00,
+    "dailyRentalPrice": 15.00,
     "brand": "Coleman",
     "categoryId": "330e8400-e29b-41d4-a716-446655440333",
     "stock": 3,
@@ -478,7 +488,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
     "data": {
       "id": "abcde400-e29b-41d4-a716-446655440abc",
       "name": "Camping Tent 4-Person",
-      "price": 15.00,
+      "dailyRentalPrice": 15.00,
       "stock": 3,
       "availability": "AVAILABLE"
     }
@@ -491,7 +501,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
 * **Request Body:**
   ```json
   {
-    "price": 18.00,
+    "dailyRentalPrice": 18.00,
     "stock": 4,
     "availability": "AVAILABLE"
   }
@@ -504,7 +514,7 @@ GearUp is a backend API for a sports and outdoor equipment rental service. Custo
     "message": "Gear listing updated successfully",
     "data": {
       "id": "abcde400-e29b-41d4-a716-446655440abc",
-      "price": 18.00,
+      "dailyRentalPrice": 18.00,
       "stock": 4,
       "availability": "AVAILABLE"
     }
