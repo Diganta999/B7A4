@@ -354,12 +354,6 @@ const updateProviderRentalOrderStatus = async (
         throw new Error("Rental order not found");
     }
 
-    const hasProviderItem = order.items.some((item) => item.gearItem.providerId === providerId);
-
-    if (!hasProviderItem) {
-        throw new Error("Unauthorized to update this rental order");
-    }
-
     const stockRestoringStatuses: RentalStatus[] = [RentalStatus.RETURNED, RentalStatus.CANCELLED];
     const shouldRestoreStock =
         stockRestoringStatuses.includes(status) && !stockRestoringStatuses.includes(order.status);
