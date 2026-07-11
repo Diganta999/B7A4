@@ -6,13 +6,27 @@ import httpStatus from "http-status";
 import { IRefreshTokenPayload } from "./auth.interface";
 
 const register = catchAsync(async (req: Request, res: Response) => {
-    const result = await AuthService.registerUser(req.body);
+    const { user, accessToken, refreshToken } = await AuthService.registerUser(req.body);
+
+    // Set cookies (auto-login after registration)
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
 
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,
         message: "User registered successfully",
-        data: result,
+        data: { user, accessToken },
     });
 });
 
@@ -85,7 +99,7 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-const logout = catchAsync(async (req: Request, res: Response) => {
+const logout = catchAsync(async (_req: Request, res: Response) => {
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
 
