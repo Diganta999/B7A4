@@ -2,14 +2,14 @@
 GEARUP API ENDPOINTS & POSTMAN RAW JSON PAYLOADS
 ================================================================================
 
-Base URL: http://localhost:5000/api
+Base URL: https://gearupshop.vercel.app/api
 
 --------------------------------------------------------------------------------
 1. AUTHENTICATION & PROFILE
 --------------------------------------------------------------------------------
 
 ### [POST] Register User
-* **URL:** http://localhost:5000/api/auth/register
+* **URL:** https://gearupshop.vercel.app/api/auth/register
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -24,7 +24,7 @@ Base URL: http://localhost:5000/api
 
 
 ### [POST] Register Provider (Alternative Role)
-* **URL:** http://localhost:5000/api/auth/register
+* **URL:** https://gearupshop.vercel.app/api/auth/register
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -39,7 +39,7 @@ Base URL: http://localhost:5000/api
 
 
 ### [POST] Login User
-* **URL:** http://localhost:5000/api/auth/login
+* **URL:** https://gearupshop.vercel.app/api/auth/login
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -49,12 +49,12 @@ Base URL: http://localhost:5000/api
 
 
 ### [GET] Get Current Authenticated Profile
-* **URL:** http://localhost:5000/api/auth/me
+* **URL:** https://gearupshop.vercel.app/api/auth/me
 * **Headers:** (Note: Requires the 'accessToken' Cookie from Login)
 
 
 ### [POST] Logout User
-* **URL:** http://localhost:5000/api/auth/logout
+* **URL:** https://gearupshop.vercel.app/api/auth/logout
 
 
 --------------------------------------------------------------------------------
@@ -62,11 +62,11 @@ Base URL: http://localhost:5000/api
 --------------------------------------------------------------------------------
 
 ### [GET] Browse Gear (No Filters)
-* **URL:** http://localhost:5000/api/gear
+* **URL:** https://gearupshop.vercel.app/api/gear
 
 
 ### [POST] Add Gear to Inventory (Requires PROVIDER/ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/gear
+* **URL:** https://gearupshop.vercel.app/api/gear
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -89,7 +89,7 @@ Base URL: http://localhost:5000/api
 
 
 ### [PUT] Update Gear Listing (Requires PROVIDER/ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/gear/abcde400-e29b-41d4-a716-446655440abc
+* **URL:** https://gearupshop.vercel.app/api/gear/abcde400-e29b-41d4-a716-446655440abc
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -104,23 +104,23 @@ Base URL: http://localhost:5000/api
 
 
 ### [DELETE] Remove Gear from Inventory (Requires PROVIDER/ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/gear/abcde400-e29b-41d4-a716-446655440abc
+* **URL:** https://gearupshop.vercel.app/api/gear/abcde400-e29b-41d4-a716-446655440abc
 
 
 ### [GET] Browse Gear (With Filters)
-* **URL:** http://localhost:5000/api/gear?category=Cycling&brand=Trek&priceMin=10&priceMax=50&searchTerm=Bike
+* **URL:** https://gearupshop.vercel.app/api/gear?category=Cycling&brand=Trek&priceMin=10&priceMax=50&searchTerm=Bike
 
 
 ### [GET] Get Gear Details By ID
-* **URL:** http://localhost:5000/api/gear/111e8400-e29b-41d4-a716-446655440111
+* **URL:** https://gearupshop.vercel.app/api/gear/111e8400-e29b-41d4-a716-446655440111
 
 
 ### [GET] Get All Categories
-* **URL:** http://localhost:5000/api/categories
+* **URL:** https://gearupshop.vercel.app/api/categories
 
 
 ### [POST] Create Category (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/categories
+* **URL:** https://gearupshop.vercel.app/api/categories
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -130,7 +130,7 @@ Base URL: http://localhost:5000/api
 
 
 ### [PUT] Update Category (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/categories/220e8400-e29b-41d4-a716-446655440222
+* **URL:** https://gearupshop.vercel.app/api/categories/220e8400-e29b-41d4-a716-446655440222
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -140,7 +140,7 @@ Base URL: http://localhost:5000/api
 
 
 ### [DELETE] Remove Category (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/categories/220e8400-e29b-41d4-a716-446655440222
+* **URL:** https://gearupshop.vercel.app/api/categories/220e8400-e29b-41d4-a716-446655440222
 
 
 --------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ Base URL: http://localhost:5000/api
 --------------------------------------------------------------------------------
 
 ### [POST] Create Rental Order (Requires CUSTOMER auth cookie)
-* **URL:** http://localhost:5000/api/rentals
+* **URL:** https://gearupshop.vercel.app/api/rentals
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -164,11 +164,11 @@ Base URL: http://localhost:5000/api
 
 
 ### [GET] Get User's Rental Orders (Requires CUSTOMER auth cookie)
-* **URL:** http://localhost:5000/api/rentals
+* **URL:** https://gearupshop.vercel.app/api/rentals
 
 
 ### [GET] Get Rental Order Details (Requires CUSTOMER/PROVIDER/ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/rentals/444e8400-e29b-41d4-a716-446655440444
+* **URL:** https://gearupshop.vercel.app/api/rentals/444e8400-e29b-41d4-a716-446655440444
 
 
 --------------------------------------------------------------------------------
@@ -176,11 +176,11 @@ Base URL: http://localhost:5000/api
 --------------------------------------------------------------------------------
 
 ### [GET] Get All Order Items (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/order-items
+* **URL:** https://gearupshop.vercel.app/api/order-items
 
 
 ### [GET] Get Order Item Details (Requires ADMIN/CUSTOMER/PROVIDER auth cookie)
-* **URL:** http://localhost:5000/api/order-items/111e8400-e29b-41d4-a716-446655440111
+* **URL:** https://gearupshop.vercel.app/api/order-items/111e8400-e29b-41d4-a716-446655440111
 
 
 --------------------------------------------------------------------------------
@@ -188,7 +188,7 @@ Base URL: http://localhost:5000/api
 --------------------------------------------------------------------------------
 
 ### [POST] Create Payment Session (Requires CUSTOMER auth cookie)
-* **URL:** http://localhost:5000/api/payments/create
+* **URL:** https://gearupshop.vercel.app/api/payments/create
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -197,7 +197,7 @@ Base URL: http://localhost:5000/api
 
 
 ### [POST] Confirm Payment Webhook
-* **URL:** http://localhost:5000/api/payments/confirm
+* **URL:** https://gearupshop.vercel.app/api/payments/confirm
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -208,11 +208,11 @@ Base URL: http://localhost:5000/api
 
 
 ### [GET] Get Payment History (Requires CUSTOMER auth cookie)
-* **URL:** http://localhost:5000/api/payments
+* **URL:** https://gearupshop.vercel.app/api/payments
 
 
 ### [GET] Get Payment Details (Requires CUSTOMER/ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/payments/888e8400-e29b-41d4-a716-446655440888
+* **URL:** https://gearupshop.vercel.app/api/payments/888e8400-e29b-41d4-a716-446655440888
 
 
 --------------------------------------------------------------------------------
@@ -220,7 +220,7 @@ Base URL: http://localhost:5000/api
 --------------------------------------------------------------------------------
 
 ### [POST] Add Gear to Inventory (Requires PROVIDER auth cookie)
-* **URL:** http://localhost:5000/api/provider/gear
+* **URL:** https://gearupshop.vercel.app/api/provider/gear
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -243,7 +243,7 @@ Base URL: http://localhost:5000/api
 
 
 ### [PUT] Update Gear Listing (Requires Owner PROVIDER auth cookie)
-* **URL:** http://localhost:5000/api/provider/gear/abcde400-e29b-41d4-a716-446655440abc
+* **URL:** https://gearupshop.vercel.app/api/provider/gear/abcde400-e29b-41d4-a716-446655440abc
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -258,15 +258,15 @@ Base URL: http://localhost:5000/api
 
 
 ### [DELETE] Remove Gear from Inventory (Requires Owner PROVIDER auth cookie)
-* **URL:** http://localhost:5000/api/provider/gear/abcde400-e29b-41d4-a716-446655440abc
+* **URL:** https://gearupshop.vercel.app/api/provider/gear/abcde400-e29b-41d4-a716-446655440abc
 
 
 ### [GET] Get Provider's Incoming Orders (Requires PROVIDER auth cookie)
-* **URL:** http://localhost:5000/api/provider/orders
+* **URL:** https://gearupshop.vercel.app/api/provider/orders
 
 
 ### [PATCH] Update Rental Order Status (Requires PROVIDER auth cookie)
-* **URL:** http://localhost:5000/api/provider/orders/444e8400-e29b-41d4-a716-446655440444
+* **URL:** https://gearupshop.vercel.app/api/provider/orders/444e8400-e29b-41d4-a716-446655440444
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -279,7 +279,7 @@ Base URL: http://localhost:5000/api
 --------------------------------------------------------------------------------
 
 ### [POST] Create Review (Requires CUSTOMER auth cookie, post-return)
-* **URL:** http://localhost:5000/api/reviews
+* **URL:** https://gearupshop.vercel.app/api/reviews
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -294,11 +294,11 @@ Base URL: http://localhost:5000/api
 --------------------------------------------------------------------------------
 
 ### [GET] Get All Users (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/admin/users
+* **URL:** https://gearupshop.vercel.app/api/admin/users
 
 
 ### [PATCH] Update User Status (Suspend/Activate) (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/admin/users/550e8400-e29b-41d4-a716-446655440000
+* **URL:** https://gearupshop.vercel.app/api/admin/users/550e8400-e29b-41d4-a716-446655440000
 * **Headers:** Content-Type: application/json
 * **Raw Body (JSON):**
 {
@@ -307,9 +307,9 @@ Base URL: http://localhost:5000/api
 
 
 ### [GET] Get All Gear Listings (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/admin/gear
+* **URL:** https://gearupshop.vercel.app/api/admin/gear
 
 
 ### [GET] Get All Rental Orders (Requires ADMIN auth cookie)
-* **URL:** http://localhost:5000/api/admin/rentals
+* **URL:** https://gearupshop.vercel.app/api/admin/rentals
 ================================================================================

@@ -71,7 +71,18 @@ const registerUser = async (payload: {
         },
     });
 
-    return newUser;
+    // Auto-login: generate tokens after registration
+    const jwtPayload = {
+        id: newUser.id,
+        role: newUser.role,
+        name: newUser.name,
+        email: newUser.email,
+    };
+
+    const accessToken = jwtUtils.createToken(jwtPayload, config.jwt_secret as string, { expiresIn: config.jwt_expiration as string } as SignOptions);
+    const refreshToken = jwtUtils.createToken(jwtPayload, config.jwt_refresh_secret as string, { expiresIn: config.jwt_refresh_expiration as string } as SignOptions);
+
+    return { user: newUser, accessToken, refreshToken };
 };
 
 const loginUser = async (payload: ILoginUser) => {
