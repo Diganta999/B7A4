@@ -371,6 +371,45 @@ const updateProviderRentalOrderStatus = async (
     });
 };
 
+const cancelRentalOrder = async (customerId: string, id: string) => {
+    const order = await prisma.rentalOrder.findUnique({
+        where: { id },
+        include: {
+            items: {
+                include: {
+                    gearItem: true,
+                },
+            },
+        },
+    });
+
+    if (!order) {
+        throw new Error("Rental order not found");
+    }
+
+    if (order.customerId !== customerId) {
+        throw new Error("Unauthorized to cancel this rental order");
+    }
+
+    const cancellableStatuses: RentalStatus[] = [RentalStatus.PLACED, RentalStatus.CONFIRMED];
+
+    if (!cancellableStatuses.includes(order.status)) {
+        throw new Error(
+            `Cannot cancel order with status '${order.status}'. Only PLACED or CONFIRMED orders can be cancelled.`
+        );
+    }
+
+    return prisma.$transaction(async (tx) => {
+        await restoreReservedStock(tx, id);
+
+        return tx.rentalOrder.update({
+            where: { id },
+            data: { status: RentalStatus.CANCELLED },
+            include: rentalOrderInclude,
+        });
+    });
+};
+
 const OrderService = {
     createRentalOrder,
     getMyRentalOrders,
@@ -378,6 +417,7 @@ const OrderService = {
     getRentalOrderById,
     getProviderRentalOrders,
     updateProviderRentalOrderStatus,
+    cancelRentalOrder,
 };
 
 export default OrderService;

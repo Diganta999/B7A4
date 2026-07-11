@@ -23,7 +23,7 @@ const allRoute = [
         path: "/users",
         route: UserRoute,
     },
-   
+
     {
         path: "/gear",
         route: GearRoute,

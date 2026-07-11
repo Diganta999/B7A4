@@ -8,6 +8,7 @@ const router = Router();
 router.post("/", checkAuth(Role.CUSTOMER), OrderController.create);
 router.get("/", checkAuth(Role.CUSTOMER), OrderController.getMine);
 router.get("/:id", checkAuth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN), OrderController.getById);
+router.patch("/:id/cancel", checkAuth(Role.CUSTOMER), OrderController.cancelOrder);
 
 export const OrderRoute = router;
 

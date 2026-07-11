@@ -83,6 +83,19 @@ const updateProviderStatus = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const cancelOrder = catchAsync(async (req: Request, res: Response) => {
+    const customerId = req.user?.id as string;
+    const { id } = req.params as { id: string };
+    const result = await OrderService.cancelRentalOrder(customerId, id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Rental order cancelled successfully",
+        data: result,
+    });
+});
+
 const OrderController = {
     create,
     getMine,
@@ -90,6 +103,7 @@ const OrderController = {
     getById,
     getProviderOrders,
     updateProviderStatus,
+    cancelOrder,
 };
 
 export default OrderController;

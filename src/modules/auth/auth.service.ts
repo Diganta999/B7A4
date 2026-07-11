@@ -163,11 +163,35 @@ const getMe = async (userId: string) => {
     return user;
 };
 
+const updateProfile = async (
+    userId: string,
+    payload: {
+        name?: string;
+        phone?: string;
+        address?: string;
+        profileImage?: string;
+    }
+) => {
+    const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+            ...(payload.name && { name: payload.name }),
+            ...(payload.phone !== undefined && { phone: payload.phone }),
+            ...(payload.address !== undefined && { address: payload.address }),
+            ...(payload.profileImage !== undefined && { profileImage: payload.profileImage }),
+        },
+        omit: { password: true },
+    });
+
+    return updatedUser;
+};
+
 const AuthService = {
     registerUser,
     loginUser,
     refreshTokenService,
     getMe,
+    updateProfile,
 };
 
 export default AuthService;

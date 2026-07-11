@@ -97,12 +97,26 @@ const logout = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const updateMe = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user?.id as string;
+
+    const result = await AuthService.updateProfile(userId, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Profile updated successfully",
+        data: result,
+    });
+});
+
 const AuthController = {
     register,
     login,
     refreshToken,
     getMe,
     logout,
+    updateMe,
 };
 
 export default AuthController;
