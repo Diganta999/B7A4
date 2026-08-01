@@ -171,7 +171,8 @@ const updateGearItem = async (
         availability?: GearAvailability;
         specifications?: any;
         images?: string[];
-    }
+    },
+    userRole?: string
 ) => {
     const gear = await prisma.gearItem.findUnique({
         where: { id },
@@ -181,7 +182,8 @@ const updateGearItem = async (
         throw new Error("Gear item not found");
     }
 
-    if (gear.providerId !== providerId) {
+    // ADMIN can edit any gear; providers can only edit their own
+    if (userRole !== "ADMIN" && gear.providerId !== providerId) {
         throw new Error("Unauthorized to edit this gear item");
     }
 
@@ -221,7 +223,7 @@ const updateGearItem = async (
     return updatedGear;
 };
 
-const deleteGearItem = async (providerId: string, id: string) => {
+const deleteGearItem = async (providerId: string, id: string, userRole?: string) => {
     const gear = await prisma.gearItem.findUnique({
         where: { id },
     });
@@ -230,7 +232,8 @@ const deleteGearItem = async (providerId: string, id: string) => {
         throw new Error("Gear item not found");
     }
 
-    if (gear.providerId !== providerId) {
+    // ADMIN can delete any gear; providers can only delete their own
+    if (userRole !== "ADMIN" && gear.providerId !== providerId) {
         throw new Error("Unauthorized to delete this gear item");
     }
 

@@ -42,8 +42,9 @@ const add = catchAsync(async (req: Request, res: Response) => {
 
 const update = catchAsync(async (req: Request, res: Response) => {
     const providerId = req.user?.id as string;
+    const userRole = req.user?.role as string;
     const { id } = req.params as { id: string };
-    const result = await GearService.updateGearItem(providerId, id, req.body);
+    const result = await GearService.updateGearItem(providerId, id, req.body, userRole);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -55,8 +56,9 @@ const update = catchAsync(async (req: Request, res: Response) => {
 
 const remove = catchAsync(async (req: Request, res: Response) => {
     const providerId = req.user?.id as string;
+    const userRole = req.user?.role as string;
     const { id } = req.params as { id: string };
-    await GearService.deleteGearItem(providerId, id);
+    await GearService.deleteGearItem(providerId, id, userRole);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

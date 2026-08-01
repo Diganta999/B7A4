@@ -27,9 +27,35 @@ const updateStatus = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const updateRole = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params as { id: string };
+    const result = await UserService.updateUserRole(id, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User role updated successfully",
+        data: result,
+    });
+});
+
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params as { id: string };
+    const result = await UserService.updateUser(id, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User updated successfully",
+        data: result,
+    });
+});
+
 const UserController = {
     getAll,
     updateStatus,
+    updateRole,
+    updateUser,
 };
 
 export default UserController;

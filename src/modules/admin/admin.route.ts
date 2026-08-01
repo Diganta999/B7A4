@@ -9,7 +9,9 @@ const router = Router();
 
 // Users
 router.get("/users", checkAuth(Role.ADMIN), UserController.getAll);
-router.patch("/users/:id", checkAuth(Role.ADMIN), UserController.updateStatus);
+router.patch("/users/:id", checkAuth(Role.ADMIN), UserController.updateUser);
+router.patch("/users/:id/status", checkAuth(Role.ADMIN), UserController.updateStatus);
+router.patch("/users/:id/role", checkAuth(Role.ADMIN), UserController.updateRole);
 
 // Gear
 router.get("/gear", checkAuth(Role.ADMIN), GearController.getAll);

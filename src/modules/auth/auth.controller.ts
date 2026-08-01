@@ -26,7 +26,7 @@ const register = catchAsync(async (req: Request, res: Response) => {
         statusCode: httpStatus.CREATED,
         success: true,
         message: "User registered successfully",
-        data: { user, accessToken },
+        data: { user, accessToken, refreshToken },
     });
 });
 
@@ -55,6 +55,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
         data: {
             user,
             accessToken,
+            refreshToken,
         },
     });
 });
