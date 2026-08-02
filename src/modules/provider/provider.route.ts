@@ -11,7 +11,7 @@ router.put("/gear/:id", checkAuth(Role.PROVIDER), GearController.update);
 router.patch("/gear/:id", checkAuth(Role.PROVIDER), GearController.update);
 router.delete("/gear/:id", checkAuth(Role.PROVIDER), GearController.remove);
 
-router.get("/orders", checkAuth(Role.PROVIDER), OrderController.getAll);
+router.get("/orders", checkAuth(Role.CUSTOMER, Role.ADMIN), OrderController.getAll);
 router.patch("/orders/:id", checkAuth(Role.PROVIDER), OrderController.updateProviderStatus);
 
 export const ProviderRoute = router;
